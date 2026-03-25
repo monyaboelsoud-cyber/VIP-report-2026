@@ -1,0 +1,325 @@
+<<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Final Data Analysis Report v1</title>
+    
+    <meta property="og:title" content="Data Analysis System">
+    <meta property="og:description" content="Technical report and performance metrics.">
+    <meta property="og:image" content=""> </head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --main-pink: #d63384;
+            --soft-pink: #f8bbd0;
+            --bg-color: #ffeef2;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+
+        .main-pink-title {
+            color: var(--main-pink) !important;
+            font-weight: bold !important;
+            font-style: italic !important;
+            font-family: 'Georgia', serif;
+        }
+
+        /* تأثير الرمي الجديد للهيدر */
+        .drop-in {
+            font-size: 3rem;
+            text-shadow: 2px 2px #fff;
+            margin-bottom: 10px;
+            animation: dropIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+        }
+
+        @keyframes dropIn {
+            0% { transform: translateY(-200px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        #typing-text {
+            color: #8a4a6d;
+            font-size: 1.2rem;
+            min-height: 1.5em;
+            font-style: italic;
+        }
+
+        .floating-emoji {
+            position: fixed;
+            font-size: 30px;
+            animation: moveUp 5s linear infinite;
+            z-index: -1;
+            opacity: 0.8;
+        }
+        @keyframes moveUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .page-section {
+            display: none;
+            width: 90%;
+            max-width: 850px;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        #welcome-page { display: flex; margin-top: 100px; }
+
+        /* تعديل شكل كروت الرسائل لتصبح مستطيلة من طرف الشاشة */
+        .message-card {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            color: #8a4a6d;
+            font-size: 1.1rem;
+            display: none;
+            animation: slideFromLeft 0.8s ease-out forwards;
+            border: 1px solid #f8bbd0;
+            margin-bottom: 15px;
+            
+            /* التنسيق الجديد */
+            width: 95%; 
+            text-align: left; 
+            border-left: 6px solid var(--main-pink);
+        }
+
+        @keyframes slideFromLeft {
+            from { opacity: 0; transform: translateX(-60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .final-card {
+            background: white;
+            width: 280px;
+            min-height: 160px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--main-pink);
+            animation: popIn 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .pink-sub-title {
+            color: var(--main-pink);
+            font-weight: bold;
+            font-style: italic;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .btn {
+            background-color: var(--main-pink);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .firework-particle {
+            position: fixed;
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            animation: firework 2s ease-out infinite;
+            z-index: -2;
+        }
+        @keyframes firework {
+            0% { transform: translate(-50%, 60vh); width: 5px; opacity: 1; }
+            50% { width: 5px; opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(50); width: 5px; opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="birthdayMusic" loop preload="auto">
+        <source src="birthday.mp3.mpeg" type="audio/mpeg">
+    </audio>
+
+    <div id="welcome-page" class="page-section">
+        <h1 class="main-pink-title drop-in">Happy Birthday Khalafawy 💕</h1>
+        <p id="typing-text"></p>
+        <button class="btn" onclick="goToMessages()">Click to Enter Our World ✨💕</button>
+    </div>
+
+    <div id="messages-page" class="page-section">
+        <h2 class="main-pink-title" style="font-size: 1.8rem; margin-bottom: 25px;">Happy Birthday To Agmal & Ashtar Mohamed Khalifa ✨</h2>
+        <div id="messages-container" style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;">
+            <div class="message-card" id="m1">🎁 Thank you for everything you've done for me. I thank God every day that you're in my life. ✨🌸</div>
+            <div class="message-card" id="m2">🎁 You're truly a unique person, Khalafawy! 🦋♥️</div>
+            <div class="message-card" id="m3">🎁 Wishing you a year full of success and joy.🎉♥️</div>
+            <div class="message-card" id="m4">🎁 May all your dreams come true! 🌸♥️</div>
+        </div>
+        <button class="btn" id="nextBtn" onclick="showNextMessage()">Click Here.. 💕</button>
+    </div>
+
+    <div id="special-page" class="page-section">
+        <h1 class="main-pink-title" style="font-size: 2.2rem; margin-bottom: 20px;">Why You Are Special...</h1>
+        <div class="cards-grid">
+            <div class="final-card">
+                <span class="pink-sub-title">Best Friend "super hero 💪🏻😂"</span>
+                <p>دايما موجود في وقت الشدة وسند حقيقي لأي حد يعرفك يعني يا بخت اي حد في حياته الخلفاوي.♥️</p>
+            </div>
+            <div class="final-card">
+                <span class="pink-sub-title">Pure Soul 🤍</span>
+                <p>قلبك أبيض وجميل وتستاهل كل حاجة حلوة في الدنيا .♥️</p>
+            </div>
+            <div class="final-card">
+                <span class="pink-sub-title">One in a Million ✨</span>
+                <p>مش شبه حد.. طاقتك وروحك حلوين بيخلوا كل حاجه أجمل.♥️</p>
+            </div>
+            <div class="final-card">
+                <span class="pink-sub-title">Fun Moments 💕</span>
+                <p>الضحك معاك له طعم تاني واليوم مش بيكمل غير بيك واخد لذاذه الدنيا كلها ليك وحدك .♥️</p>
+            </div>
+        </div>
+        <button class="btn" onclick="goToParty()">Ready for the Surprise? 🎉🎁</button>
+    </div>
+
+    <div id="party-page" class="page-section">
+        <h1 class="main-pink-title" style="font-size: 2.5rem; margin-bottom: 20px;">It's Party Time! 🎉🎂</h1>
+        
+        <div style="margin: 30px 0;">
+            <video autoplay loop muted playsinline style="max-width: 250px; border-radius: 20px; box-shadow: 0 0 20px rgba(214, 51, 132, 0.3);">
+                <source src="cake2.gif.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+        <p style="color: #8a4a6d; font-size: 1.2rem; font-style: italic; max-width: 500px; line-height: 1.6;">
+            فاكر هتهرب من الاحتفال عشان بعيد؟😂🎉 لازم هنحتفل سوا بردو…  
+          🎶✨حتى لو كل حد في مكان بس احنا نفس المود
+          Happy Birthday 🎂🌸
+        </p>
+
+        <button class="btn" onclick="goToFinal()">One Final Note.. ✨</button>
+    </div>
+
+    <div id="final-page" class="page-section">
+        <div style="margin-top: 100px; padding: 40px; background: #fff; border-radius: 20px; border: 2px dashed var(--main-pink); color: #d63384; font-weight: bold; font-style: italic; box-shadow: 0 10px 30px rgba(0,0,0,0.05); animation: popIn 0.8s ease;">
+            "And finally, always remember that you are more than enough. You are loved, appreciated, and cherished. Happy Birthday to the best one ever!" 🎂💖
+        </div>
+    </div>
+
+    <script>
+        const textToType = "Hey You Know What? You're the most amazing person I've ever met! 🦋💕";
+        let index = 0;
+        function typeEffect() {
+            if (index < textToType.length) {
+                document.getElementById("typing-text").innerHTML += textToType.charAt(index);
+                index++;
+                setTimeout(typeEffect, 60);
+            }
+        }
+        window.onload = typeEffect;
+
+        function goToMessages() {
+            document.getElementById('welcome-page').style.display = 'none';
+            document.getElementById('messages-page').style.display = 'flex';
+        }
+
+        let currentMessage = 1;
+        const totalMessages = 4;
+        function showNextMessage() {
+            if (currentMessage <= totalMessages) {
+                document.getElementById('m' + currentMessage).style.display = 'block';
+                currentMessage++;
+                if (currentMessage > totalMessages) {
+                    document.getElementById('nextBtn').innerHTML = "Click for Why You're Special ✨";
+                    document.getElementById('nextBtn').onclick = goToSpecial;
+                }
+            }
+        }
+
+        function goToSpecial() {
+            document.getElementById('messages-page').style.display = 'none';
+            document.getElementById('special-page').style.display = 'flex';
+        }
+
+        function goToParty() {
+            document.getElementById('special-page').style.display = 'none';
+            document.getElementById('party-page').style.display = 'flex';
+            
+            const music = document.getElementById('birthdayMusic');
+            music.play();
+            
+            startFireworks();
+        }
+
+        function goToFinal() {
+            document.getElementById('party-page').style.display = 'none';
+            document.getElementById('final-page').style.display = 'flex';
+            
+            const music = document.getElementById('birthdayMusic');
+            music.pause();
+            music.currentTime = 0;
+            
+            stopFireworks();
+        }
+
+        function createEmoji() {
+            const emoji = document.createElement('div');
+            emoji.classList.add('floating-emoji');
+            const types = ['💕', '🦋', '✨', '🌸', '🎁', '♥️'];
+            emoji.innerHTML = types[Math.floor(Math.random() * types.length)];
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 5000);
+        }
+        setInterval(createEmoji, 300);
+
+        let fireworkInterval;
+        function startFireworks() {
+            fireworkInterval = setInterval(() => {
+                const firework = document.createElement('div');
+                firework.classList.add('firework-particle');
+                firework.style.left = Math.random() * 100 + 'vw';
+                const colors = ['#d63384', '#ffeb3b', '#03a9f4', '#4caf50'];
+                firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 2000);
+            }, 500);
+        }
+        function stopFireworks() {
+            clearInterval(fireworkInterval);
+        }
+    </script>
+</body>
+</html>
